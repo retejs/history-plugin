@@ -2,7 +2,7 @@
   "name": "rete-history-plugin",
   "version": "0.1.2",
   "description": "",
-  "main": "build/history-plugin.min.js",
+  "main": "build/history-plugin.common.js",
   "module": "build/history-plugin.esm.js",
   "scripts": {
     "build": "rete --build rete.config.js",
@@ -13,6 +13,6 @@
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
-    "rete-cli": "^0.4.2"
+    "rete-cli": "^0.5.0"
   }
 }

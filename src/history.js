@@ -6,14 +6,15 @@ export default class History {
     }
 
     add(action) {
-        if(this.active) return;
+        if (this.active) return;
         this.produced.push(action);
         this.reserved = [];
     }
 
     _do(from, to, type) {
         const action = from.pop();
-        if(!action) return;
+
+        if (!action) return;
 
         this.active = true;
         action[type]();

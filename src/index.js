@@ -1,7 +1,17 @@
 import History from './history';
-import Action from './action';
+import Act from './action';
 import { AddNodeAction, RemoveNodeAction } from './actions/node';
 import { AddConnectionAction, RemoveConnectionAction } from './actions/connection';
+
+function trackNodes(editor, history) {
+    editor.on('nodecreated', node => history.add(new AddNodeAction(editor, node)));
+    editor.on('noderemoved', node => history.add(new RemoveNodeAction(editor, node)));
+}
+
+function trackConnections(editor, history) {
+    editor.on('connectioncreated', c => history.add(new AddConnectionAction(editor, c)));
+    editor.on('connectionremoved', c => history.add(new RemoveConnectionAction(editor, c)));
+}
 
 function install(editor, { keyboard = true }) {
     editor.bind('undo');
@@ -14,24 +24,23 @@ function install(editor, { keyboard = true }) {
     editor.on('redo', () => history.redo());
     editor.on('addhistory', action => history.add(action));
 
-    editor.on('nodecreated', node => history.add(new AddNodeAction(editor, node)));
-    editor.on('noderemoved', node => history.add(new RemoveNodeAction(editor, node)));
-    editor.on('connectioncreated', c => history.add(new AddConnectionAction(editor, c)));
-    editor.on('connectionremoved', c => history.add(new RemoveConnectionAction(editor, c)));
+    if (keyboard) document.addEventListener('keydown', e => {
+        if (!e.ctrlKey) return;
 
-    
-    if(keyboard) document.addEventListener('keydown', e => {
-        if(!e.ctrlKey) return;
-
-        switch(e.code) {
-            case 'KeyZ': editor.trigger('undo'); break;
-            case 'KeyY': editor.trigger('redo'); break;
+        switch (e.code) {
+        case 'KeyZ': editor.trigger('undo'); break;
+        case 'KeyY': editor.trigger('redo'); break;
+        default:
         }
     });
+
+    trackNodes(editor, history);
+    trackConnections(editor, history);
 }
+
+export const Action = Act;
 
 export default {
     name: 'history',
-    install,
-    Action
+    install
 }

@@ -1,11 +1,14 @@
 import Action from '../action';
 
-export class AddNodeAction extends Action {
+class NodeAction extends Action {
     constructor(editor, node) {
         super();
         this.editor = editor;
         this.node = node;
     }
+}
+
+export class AddNodeAction extends NodeAction {
     undo() {
         this.editor.removeNode(this.node);
     }
@@ -14,12 +17,7 @@ export class AddNodeAction extends Action {
     }
 }
 
-export class RemoveNodeAction extends Action {
-    constructor(editor, node) {
-        super();
-        this.editor = editor;
-        this.node = node;
-    }
+export class RemoveNodeAction extends NodeAction {
     undo() {
         this.editor.addNode(this.node);
     }
