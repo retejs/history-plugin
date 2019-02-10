@@ -1,11 +1,17 @@
 import History from './history';
 import Act from './action';
-import { AddNodeAction, RemoveNodeAction } from './actions/node';
+import { AddNodeAction, DragNodeAction, RemoveNodeAction } from './actions/node';
 import { AddConnectionAction, RemoveConnectionAction } from './actions/connection';
 
 function trackNodes(editor, history) {
     editor.on('nodecreated', node => history.add(new AddNodeAction(editor, node)));
     editor.on('noderemoved', node => history.add(new RemoveNodeAction(editor, node)));
+    editor.on('nodetranslated', ({ node, prev }) => {
+        if (history.last instanceof DragNodeAction && history.last.node === node)
+            history.last.update(node);
+        else
+            history.add(new DragNodeAction(editor, node, prev));
+    });
 }
 
 function trackConnections(editor, history) {

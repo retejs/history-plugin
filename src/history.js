@@ -11,6 +11,10 @@ export default class History {
         this.reserved = [];
     }
 
+    get last() {
+        return this.produced[this.produced.length - 1];
+    }
+
     _do(from, to, type) {
         const action = from.pop();
 
