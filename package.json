@@ -9,8 +9,12 @@
     "build:dev": "rete --build rete.config.js --watch",
     "prepublishOnly": "npm run build"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Vitaliy Stoliarov",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/retejs/history-plugin.git"
+  },
   "dependencies": {},
   "devDependencies": {
     "rete-cli": "^0.5.0"
