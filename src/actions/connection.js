@@ -28,7 +28,7 @@ export class RemoveConnectionAction extends Action {
         this.connection = connection;
     }
     undo() {
-        this.editor.connect(output, input);
+        this.editor.connect(this.connection.output, this.connection.input);
         this.connection = reassign(this.connection);
     }
     redo() {
