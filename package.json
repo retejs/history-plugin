@@ -1,6 +1,6 @@
 {
   "name": "rete-history-plugin",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "",
   "main": "build/history-plugin.common.js",
   "module": "build/history-plugin.esm.js",
