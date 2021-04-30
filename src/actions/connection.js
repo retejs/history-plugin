@@ -1,37 +1,38 @@
 import Action from '../action';
 
-function reassign(connection) {
-    const { input, output } = connection;
-
+// The saved connection may have been removed and recreated, so make sure we are working with the correct reference
+function findNewConnection(oldConnection) {
+    const { input, output } = oldConnection;
     return output.connections.find(c => c.input === input);
+}
+
+class ConnectionActionHelper {
+    constructor(editor, connection) {
+        this.editor = editor;
+        this.connection = connection;
+    }
+    add() {
+        this.editor.connect(this.connection.output, this.connection.input);
+    }
+    remove() {
+        this.editor.removeConnection(findNewConnection(this.connection));
+    }
 }
 
 export class AddConnectionAction extends Action {
     constructor(editor, connection) {
         super();
-        this.editor = editor;
-        this.connection = connection;
+        this.helper = new ConnectionActionHelper(editor, connection);
     }
-    undo() {
-        this.editor.removeConnection(this.connection);
-    }
-    redo() {
-        this.editor.connect(this.connection.output, this.connection.input);
-        this.connection = reassign(this.connection);
-    }
+    undo() { this.helper.remove(); }
+    redo() { this.helper.add(); }
 }
 
 export class RemoveConnectionAction extends Action {
     constructor(editor, connection) {
         super();
-        this.editor = editor;
-        this.connection = connection;
+        this.helper = new ConnectionActionHelper(editor, connection);
     }
-    undo() {
-        this.editor.connect(this.connection.output, this.connection.input);
-        this.connection = reassign(this.connection);
-    }
-    redo() {
-        this.editor.removeConnection(this.connection);
-    }
+    undo() { this.helper.add(); }
+    redo() { this.helper.remove(); }
 }
