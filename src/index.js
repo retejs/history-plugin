@@ -29,7 +29,9 @@ function install(editor, { keyboard = true }) {
     editor.on('undo', () => history.undo());
     editor.on('redo', () => history.redo());
     editor.on('addhistory', action => history.add(action));
-
+    editor.on('clear', () => {
+        history.clear();
+      });
     if (keyboard) document.addEventListener('keydown', e => {
         if (!e.ctrlKey) return;
 

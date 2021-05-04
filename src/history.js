@@ -29,7 +29,11 @@ export default class History {
     undo() {
         this._do(this.produced, this.reserved, 'undo');
     }
-
+    clear() {
+        this.active = false;
+        this.produced = [];
+        this.reserved = [];
+      }
     redo() {
         this._do(this.reserved, this.produced, 'redo');
     }
