@@ -19,6 +19,7 @@ function trackConnections(editor, history) {
     editor.on('connectionremoved', c => history.add(new RemoveConnectionAction(editor, c)));
 }
 
+// eslint-disable-next-line max-statements
 function install(editor, { keyboard = true }) {
     editor.bind('undo');
     editor.bind('redo');
@@ -31,7 +32,7 @@ function install(editor, { keyboard = true }) {
     editor.on('addhistory', action => history.add(action));
     editor.on('clear', () => {
         history.clear();
-      });
+    });
     if (keyboard) document.addEventListener('keydown', e => {
         if (!e.ctrlKey) return;
 
