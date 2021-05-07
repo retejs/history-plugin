@@ -1,7 +1,7 @@
-import History from './history';
-import Act from './action';
-import { AddNodeAction, DragNodeAction, RemoveNodeAction } from './actions/node';
 import { AddConnectionAction, RemoveConnectionAction } from './actions/connection';
+import { AddNodeAction, DragNodeAction, RemoveNodeAction } from './actions/node';
+import Act from './action';
+import History from './history';
 
 function trackNodes(editor, history) {
     editor.on('nodecreated', node => history.add(new AddNodeAction(editor, node)));
