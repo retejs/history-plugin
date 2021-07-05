@@ -23,6 +23,7 @@ function trackConnections(editor, history) {
 function install(editor, { keyboard = true }) {
     editor.bind('undo');
     editor.bind('redo');
+    editor.bind('clear');
     editor.bind('addhistory');
 
     const history = new History();
