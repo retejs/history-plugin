@@ -9,8 +9,10 @@
     "build:dev": "rete --build rete.config.js --watch",
     "lint": "eslint src",
     "lint:fix": "eslint --fix src",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "prepare": "npm run build"
   },
+  "types": "./index.d.ts",
   "author": "Vitaliy Stoliarov",
   "license": "MIT",
   "repository": {
