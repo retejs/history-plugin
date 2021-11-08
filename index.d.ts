@@ -1,4 +1,5 @@
 import { Plugin as RetePlugin } from 'rete/types/core/plugin';
+import {NodeEditor} from 'rete';
 
 type InstallOptions = {
   keyboard?: boolean, // use ctrl-z and ctrl-y for undo/redo, default true
