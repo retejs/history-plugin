@@ -14,5 +14,5 @@ export class Action {
 }
 
 
-declare const _default: RetePlugin;
+declare const _default: HistoryPlugin;
 export default _default;
