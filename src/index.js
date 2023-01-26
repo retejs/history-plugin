@@ -34,7 +34,7 @@ function install(editor, { keyboard = true }) {
         history.clear();
     });
     if (keyboard) document.addEventListener('keydown', e => {
-        if (!e.ctrlKey) return;
+        if (!e.ctrlKey && !e.metaKey) return;
 
         switch (e.code) {
         case 'KeyZ': editor.trigger('undo'); break;
