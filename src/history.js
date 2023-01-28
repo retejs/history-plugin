@@ -3,7 +3,7 @@ export default class History {
         this.active = false;
         this.produced = [];
         this.reserved = [];
-        if (limit && typeof this.limit === 'number') this.limit = limit;
+        if (limit && typeof limit === 'number') this.limit = limit;
     }
 
     add(action) {
