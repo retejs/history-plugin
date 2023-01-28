@@ -8,6 +8,11 @@ import HistoryPlugin from 'rete-history-plugin';
 editor.use(HistoryPlugin, { keyboard: true });
 ```
 
+Limit number of stored history records
+```js
+editor.use(HistoryPlugin, { limit: 100 });
+```
+
 Handle history programmatically 
 ```js
 editor.trigger('undo');

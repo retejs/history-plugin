@@ -1,13 +1,15 @@
 export default class History {
-    constructor() {
+    constructor({ limit }) {
         this.active = false;
         this.produced = [];
         this.reserved = [];
+        if (limit && typeof this.limit === 'number') this.limit = limit;
     }
 
     add(action) {
         if (this.active) return;
         this.produced.push(action);
+        if (this.produced.length > this.limit) this.produced.shift();
         this.reserved = [];
     }
 

@@ -20,12 +20,15 @@ function trackConnections(editor, history) {
 }
 
 // eslint-disable-next-line max-statements
-function install(editor, { keyboard = true }) {
+function install(editor, {
+    keyboard = true,
+    limit = false
+}) {
     editor.bind('undo');
     editor.bind('redo');
     editor.bind('addhistory');
 
-    const history = new History();
+    const history = new History({ limit });
 
     editor.on('undo', () => history.undo());
     editor.on('redo', () => history.redo());
