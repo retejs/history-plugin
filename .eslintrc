@@ -1,9 +1,3 @@
 {
-  "extends": "./node_modules/rete-cli/.eslintrc",
-  "rules": {
-    "indent": ["error", 4],
-    "lines-between-class-members": ["error"],
-    "eol-last": ["error"],
-    "quotes": ["error", "single"]
-  }
+  "extends": ["./node_modules/rete-cli/.eslintrc"]
 }

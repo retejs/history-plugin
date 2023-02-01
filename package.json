@@ -1,15 +1,15 @@
 {
   "name": "rete-history-plugin",
-  "version": "0.2.1",
+  "version": "2.0.0-beta.1",
   "description": "",
   "main": "build/history-plugin.common.js",
   "module": "build/history-plugin.esm.js",
+  "types": "types",
   "scripts": {
-    "build": "rete --build rete.config.js",
-    "build:dev": "rete --build rete.config.js --watch",
-    "lint": "eslint src",
-    "lint:fix": "eslint --fix src",
-    "prepublishOnly": "npm run build"
+    "build": "rete build -c rete.config.ts",
+    "build:dev": "rete build -c rete.config.ts --watch",
+    "prepublishOnly": "npm run build",
+    "lint": "rete lint"
   },
   "author": "Vitaliy Stoliarov",
   "license": "MIT",
@@ -17,9 +17,14 @@
     "type": "git",
     "url": "https://github.com/retejs/history-plugin.git"
   },
+  "peerDependencies": {
+    "rete": "file:../rete/rete-2.0.0-beta.1.tgz",
+    "rete-area-plugin": "file:../area-plugin/rete-area-plugin-0.2.1.tgz"
+  },
   "devDependencies": {
-    "babel-eslint": "^10.1.0",
-    "eslint": "^7.25.0",
-    "rete-cli": "^0.6.0"
+    "rete": "file:../rete/rete-2.0.0-beta.1.tgz",
+    "rete-area-plugin": "file:../area-plugin/rete-area-plugin-0.2.1.tgz",
+    "rete-cli": "file:../rete-cli/rete-cli-1.0.0-beta.15.tgz",
+    "typescript": "~4.8.4"
   }
 }
