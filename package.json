@@ -2,9 +2,6 @@
   "name": "rete-history-plugin",
   "version": "2.0.0-beta.1",
   "description": "",
-  "main": "build/history-plugin.common.js",
-  "module": "build/history-plugin.esm.js",
-  "types": "types",
   "scripts": {
     "build": "rete build -c rete.config.ts",
     "build:dev": "rete build -c rete.config.ts --watch",
@@ -18,13 +15,13 @@
     "url": "https://github.com/retejs/history-plugin.git"
   },
   "peerDependencies": {
-    "rete": "file:../rete/rete-2.0.0-beta.1.tgz",
-    "rete-area-plugin": "file:../area-plugin/rete-area-plugin-0.2.1.tgz"
+    "rete": "file:../rete/dist/package.tgz",
+    "rete-area-plugin": "file:../area-plugin/dist/package.tgz"
   },
   "devDependencies": {
-    "rete": "file:../rete/rete-2.0.0-beta.1.tgz",
-    "rete-area-plugin": "file:../area-plugin/rete-area-plugin-0.2.1.tgz",
-    "rete-cli": "file:../rete-cli/rete-cli-1.0.0-beta.15.tgz",
+    "rete": "file:../rete/dist/package.tgz",
+    "rete-area-plugin": "file:../area-plugin/dist/package.tgz",
+    "rete-cli": "^1.0.0-beta.18",
     "typescript": "~4.8.4"
   }
 }
