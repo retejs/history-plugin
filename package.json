@@ -4,8 +4,6 @@
   "description": "",
   "scripts": {
     "build": "rete build -c rete.config.ts",
-    "build:dev": "rete build -c rete.config.ts --watch",
-    "prepublishOnly": "npm run build",
     "lint": "rete lint"
   },
   "author": "Vitaliy Stoliarov",
@@ -15,13 +13,13 @@
     "url": "https://github.com/retejs/history-plugin.git"
   },
   "peerDependencies": {
-    "rete": "file:../rete/dist/package.tgz",
-    "rete-area-plugin": "file:../area-plugin/dist/package.tgz"
+    "rete": "^2.0.0-beta.1",
+    "rete-area-plugin": "^2.0.0-beta.1"
   },
   "devDependencies": {
-    "rete": "file:../rete/dist/package.tgz",
-    "rete-area-plugin": "file:../area-plugin/dist/package.tgz",
-    "rete-cli": "^1.0.0-beta.18",
+    "rete": "^2.0.0-beta.1",
+    "rete-area-plugin": "^2.0.0-beta.1",
+    "rete-cli": "^1.0.0-beta.25",
     "typescript": "~4.8.4"
   }
 }
