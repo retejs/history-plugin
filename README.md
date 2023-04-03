@@ -1,65 +1,24 @@
-History
+Rete.js History plugin
 ====
-#### Rete.js plugin
+[![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.svg?labelColor=0057b7)](https://stand-with-ukraine.pp.ua)
+[![Discord](https://img.shields.io/discord/1081223198055604244?color=%237289da&label=Discord)](https://discord.gg/cxSFkPZdsV)
 
-```js
-import HistoryPlugin from 'rete-history-plugin';
+**Rete.js plugin**
 
-editor.use(HistoryPlugin, { keyboard: true });
-```
+## Key features
 
-Limit number of stored history records
-```js
-editor.use(HistoryPlugin, { limit: 100 });
-```
+- **Undo/Redo**: provides the ability to undo or redo changes made to the editor
+- **Extensions**:
+  - **Keyboard**: enables the use of keyboard shortcuts to perform undo/redo actions
 
-Handle history programmatically 
-```js
-editor.trigger('undo');
-editor.trigger('redo');
-```
+## Getting Started
 
-Custom action
-```js
-import { Action } from 'rete-history-plugin';
+Please refer to the [guide](https://retejs.org/docs/guides/undo-redo) and [example](https://retejs.org/examples/history) using this plugin
 
-export class YourAction extends Action {
-    constructor() {
-        super();
-    }
-    undo() {
-        ///
-    }
-    redo() {
-        ///
-    }
-}
+## Contribution
 
-editor.trigger('addhistory', new YourAction());
-```
+Please refer to the [Contribution](https://retejs.org/docs/contribution) guide
 
+## License
 
-Example: add text field changes to history
-
-```js
-class FieldChangeAction extends HistoryPlugin.Action {
-    constructor(prev, next, set) {
-        super()
-        this.prev = prev;
-        this.next = next;
-        this.set = set;
-    }
-    undo() {
-        this.set(this.prev);
-    }
-    redo() {
-        this.set(this.next);
-    }
-}
-
-// inside a "change" method of your Control (called by user action)
-// this.value - value before changing
-// next - new value
-// (v) => this.set(v) - change value of Field by undo/redo
-this.emitter.trigger('addhistory', new FieldChangeAction(this.value, next, (v) => this.set(v)));
-```
+[MIT](https://github.com/retejs/history-plugin/blob/master/LICENSE)
