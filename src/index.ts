@@ -62,13 +62,21 @@ export class HistoryPlugin<Schemes extends BaseSchemes, A extends Action = Actio
     this.history.clear()
   }
 
+  public separate() {
+    const latest = this.history.produced[this.history.produced.length - 1]
+
+    if (latest) latest.separated = true
+  }
+
   public async undo(): Promise<void> {
     const record = await this.history.undo()
 
     if (record) {
       const latest = this.history.produced[this.history.produced.length - 1]
 
-      if (latest && latest.time + this.timing > record.time) await this.undo()
+      if (latest && !latest.separated && latest.time + this.timing > record.time) {
+        await this.undo()
+      }
     }
   }
 
@@ -78,7 +86,9 @@ export class HistoryPlugin<Schemes extends BaseSchemes, A extends Action = Actio
     if (record) {
       const latest = this.history.reserved[this.history.reserved.length - 1]
 
-      if (latest && record.time + this.timing > latest.time) await this.redo()
+      if (latest && !record.separated && record.time + this.timing > latest.time) {
+        await this.redo()
+      }
     }
   }
 }

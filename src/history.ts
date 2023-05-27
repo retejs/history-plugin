@@ -1,6 +1,6 @@
 import { Action } from './types'
 
-export type HistoryRecord<A extends Action> = { time: number, action: A }
+export type HistoryRecord<A extends Action> = { time: number, action: A, separated?: boolean }
 
 export default class History<A extends Action> {
   active = false
@@ -24,8 +24,13 @@ export default class History<A extends Action> {
     const treshold = now - ms
     const list: HistoryRecord<A>[] = []
 
-    for (let i = this.produced.length - 1; this.produced[i] && this.produced[i].time > treshold; i--) {
-      list.push(this.produced[i])
+    for (let i = this.produced.length - 1; i >= 0; i--) {
+      const action = this.produced[i]
+
+      if (action.time <= treshold) break
+      if (action.separated) break
+
+      list.push(action)
     }
     return list
   }
