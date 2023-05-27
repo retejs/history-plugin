@@ -130,6 +130,22 @@ export class HistoryPlugin<Schemes extends BaseSchemes, K> extends Scope<never, 
     })
   }
 
+  public add(action: A) {
+    this.history.add(action)
+  }
+
+  public getHistorySnapshot() {
+    return [...this.history.produced]
+  }
+
+  public getRecent(ms: number) {
+    return this.history.getRecent(ms)
+  }
+
+  public clear() {
+    this.history.clear()
+  }
+
   public async undo(): Promise<void> {
     const record = await this.history.undo()
 
