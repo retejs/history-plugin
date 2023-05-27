@@ -9,7 +9,7 @@ export class AddNodeAction<S extends BaseSchemes, K> implements Action {
   node?: S['Node']
   position?: Position
 
-  constructor(private editor: NodeEditor<S>, private area: AreaPlugin<S, K>, private nodeId: NodeId) {}
+  constructor(private editor: NodeEditor<S>, private area: AreaPlugin<S, K>, private nodeId: NodeId) { }
 
   async undo() {
     this.node = this.editor.getNode(this.nodeId)
@@ -19,21 +19,21 @@ export class AddNodeAction<S extends BaseSchemes, K> implements Action {
 
   async redo() {
     if (this.node) await this.editor.addNode(this.node)
-    if (this.node && this.position) await this.area.nodeViews.get(this.node.id)?.translate(this.position.x, this.position.y)
+    if (this.node && this.position) await this.area.translate(this.node.id, this.position)
   }
 }
 
 export class RemoveNodeAction<S extends BaseSchemes, K> implements Action {
   constructor(
-        private editor: NodeEditor<S>,
-        private area: AreaPlugin<S, K>,
-        private node: S['Node'],
-        private position: Position
-  ) {}
+    private editor: NodeEditor<S>,
+    private area: AreaPlugin<S, K>,
+    private node: S['Node'],
+    private position: Position
+  ) { }
 
   async undo() {
     await this.editor.addNode(this.node)
-    this.area.nodeViews.get(this.node.id)?.translate(this.position.x, this.position.y)
+    await this.area.translate(this.node.id, this.position)
   }
 
   async redo() {

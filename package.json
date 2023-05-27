@@ -23,12 +23,12 @@
     "url": "https://github.com/retejs/history-plugin/issues"
   },
   "peerDependencies": {
-    "rete": "^2.0.0-beta.1",
-    "rete-area-plugin": "^2.0.0-beta.1"
+    "rete": "^2.0.0-beta.9",
+    "rete-area-plugin": "^2.0.0-beta.12"
   },
   "devDependencies": {
-    "rete": "^2.0.0-beta.1",
-    "rete-area-plugin": "^2.0.0-beta.1",
+    "rete": "^2.0.0-beta.9",
+    "rete-area-plugin": "^2.0.0-beta.12",
     "rete-cli": "^1.0.0-beta.29",
     "typescript": "~4.8.4"
   },
