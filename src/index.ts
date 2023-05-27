@@ -12,8 +12,12 @@ export class HistoryPlugin<Schemes extends BaseSchemes, K> extends Scope<never, 
   private editor!: NodeEditor<Schemes>
   private area!: AreaPlugin<Schemes, K>
 
-  constructor() {
+  private timing: number
+
+  constructor(props?: { timing?: number }) {
     super('history')
+
+    this.timing = props?.timing ?? 200
   }
 
   setParent(scope: Scope<Area2D<Schemes>, [Root<Schemes>]>): void {
@@ -86,15 +90,15 @@ export class HistoryPlugin<Schemes extends BaseSchemes, K> extends Scope<never, 
       }
       if (context.type === 'nodetranslated') {
         const { id, position, previous } = context.data
-        const recent = this.history.getRecent(1000)
-          .map(n => n.action)
-          .filter((n): n is DragNodeAction<Schemes, any> => n instanceof DragNodeAction)
-          .filter(n => n.nodeId === id)
+        const recent = this.history.getRecent(this.timing * 2)
+          .filter((n): n is ({ time: number, action: DragNodeAction<Schemes, any> }) => n.action instanceof DragNodeAction)
+          .filter(n => n.action.nodeId === id)
 
         if (recent.length > 1) throw new Error('> 1')
 
         if (recent[0]) {
-          recent[0].new = position
+          recent[0].action.new = position
+          recent[0].time = Date.now()
         } else {
           this.history.add(new DragNodeAction(this.area, id, previous))
         }
@@ -132,7 +136,7 @@ export class HistoryPlugin<Schemes extends BaseSchemes, K> extends Scope<never, 
     if (record) {
       const latest = this.history.produced[this.history.produced.length - 1]
 
-      if (latest && latest.time + 200 > record.time) await this.undo()
+      if (latest && latest.time + this.timing > record.time) await this.undo()
     }
   }
 
@@ -142,7 +146,7 @@ export class HistoryPlugin<Schemes extends BaseSchemes, K> extends Scope<never, 
     if (record) {
       const latest = this.history.reserved[this.history.reserved.length - 1]
 
-      if (latest && record.time + 200 > latest.time) await this.redo()
+      if (latest && record.time + this.timing > latest.time) await this.redo()
     }
   }
 }
