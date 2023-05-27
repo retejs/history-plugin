@@ -1,15 +1,15 @@
 import { BaseSchemes, NodeEditor, NodeId } from 'rete'
-import { AreaPlugin } from 'rete-area-plugin'
+import { BaseArea, BaseAreaPlugin } from 'rete-area-plugin'
 
-import Action from '../action'
+import { Action } from '../../../types'
 
 export type Position = { x: number, y: number }
 
-export class AddNodeAction<S extends BaseSchemes, K> implements Action {
+export class AddNodeAction<S extends BaseSchemes> implements Action {
   node?: S['Node']
   position?: Position
 
-  constructor(private editor: NodeEditor<S>, private area: AreaPlugin<S, K>, private nodeId: NodeId) { }
+  constructor(private editor: NodeEditor<S>, private area: BaseAreaPlugin<S, BaseArea<S>>, private nodeId: NodeId) { }
 
   async undo() {
     this.node = this.editor.getNode(this.nodeId)
@@ -23,10 +23,10 @@ export class AddNodeAction<S extends BaseSchemes, K> implements Action {
   }
 }
 
-export class RemoveNodeAction<S extends BaseSchemes, K> implements Action {
+export class RemoveNodeAction<S extends BaseSchemes> implements Action {
   constructor(
     private editor: NodeEditor<S>,
-    private area: AreaPlugin<S, K>,
+    private area: BaseAreaPlugin<S, BaseArea<S>>,
     private node: S['Node'],
     private position: Position
   ) { }
@@ -41,11 +41,11 @@ export class RemoveNodeAction<S extends BaseSchemes, K> implements Action {
   }
 }
 
-export class DragNodeAction<S extends BaseSchemes, K> implements Action {
+export class DragNodeAction<S extends BaseSchemes> implements Action {
   prev!: Position
   new!: Position
 
-  constructor(private area: AreaPlugin<S, K>, public nodeId: NodeId, prev: Position) {
+  constructor(private area: BaseAreaPlugin<S, BaseArea<S>>, public nodeId: NodeId, prev: Position) {
     const view = area.nodeViews.get(nodeId)
 
     if (!view) return

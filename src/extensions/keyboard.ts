@@ -1,8 +1,9 @@
 import { BaseSchemes } from 'rete'
 
 import { HistoryPlugin } from '..'
+import { Action } from '../types'
 
-export function keyboard<Schemes extends BaseSchemes, K>(plugin: HistoryPlugin<Schemes, K>) {
+export function keyboard<Schemes extends BaseSchemes, A extends Action>(plugin: HistoryPlugin<Schemes, A>) {
   document.addEventListener('keydown', e => {
     if (!e.ctrlKey && !e.metaKey) return
 

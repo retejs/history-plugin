@@ -1,18 +1,18 @@
-import Action from './action'
+import { Action } from './types'
 
-type HistoryRecord = { time: number, action: Action }
+export type HistoryRecord<A extends Action> = { time: number, action: A }
 
-export default class History {
+export default class History<A extends Action> {
   active = false
-  produced: HistoryRecord[] = []
-  reserved: HistoryRecord[] = []
+  produced: HistoryRecord<A>[] = []
+  reserved: HistoryRecord<A>[] = []
   limit?: number
 
   constructor({ limit }: { limit?: number }) {
     if (limit && typeof limit === 'number') this.limit = limit
   }
 
-  add(action: Action) {
+  add(action: A) {
     if (this.active) return
     this.produced.push({ time: Date.now(), action })
     if (this.limit && this.produced.length > this.limit) this.produced.shift()
@@ -22,7 +22,7 @@ export default class History {
   getRecent(ms: number) {
     const now = Date.now()
     const treshold = now - ms
-    const list: HistoryRecord[] = []
+    const list: HistoryRecord<A>[] = []
 
     for (let i = this.produced.length - 1; this.produced[i] && this.produced[i].time > treshold; i--) {
       list.push(this.produced[i])
@@ -30,7 +30,7 @@ export default class History {
     return list
   }
 
-  async move(from: HistoryRecord[], to: HistoryRecord[], type: 'undo' | 'redo') {
+  async move(from: HistoryRecord<A>[], to: HistoryRecord<A>[], type: 'undo' | 'redo') {
     const record = from.pop()
 
     if (!record) return

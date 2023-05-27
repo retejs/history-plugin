@@ -1,18 +1,23 @@
-import { BaseSchemes, ConnectionId, NodeEditor, NodeId, Root, Scope } from 'rete'
-import { Area2D, Area2DInherited, AreaPlugin } from 'rete-area-plugin'
+import { BaseSchemes, NodeEditor, Root, Scope } from 'rete'
+import { BaseArea, BaseAreaPlugin } from 'rete-area-plugin'
 
-import { AddConnectionAction, RemoveConnectionAction } from './actions/connection'
-import { AddNodeAction, DragNodeAction, Position, RemoveNodeAction } from './actions/node'
 import History from './history'
+import { Preset } from './presets/types'
+import type { Action } from './types'
 
+export type { Action as HistoryAction }
 export * as HistoryExtensions from './extensions'
+export * as Presets from './presets'
+export type { HistoryActions } from './presets/classic'
+export type { Preset } from './presets/types'
 
-export class HistoryPlugin<Schemes extends BaseSchemes, K> extends Scope<never, Area2DInherited<Schemes, K>> {
-  private history = new History({})
+export class HistoryPlugin<Schemes extends BaseSchemes, A extends Action = Action> extends Scope<never, [BaseArea<Schemes>, Root<Schemes>]> {
+  private history = new History<A>({})
   private editor!: NodeEditor<Schemes>
-  private area!: AreaPlugin<Schemes, K>
+  private area!: BaseAreaPlugin<Schemes, BaseArea<Schemes>>
 
-  private timing: number
+  private presets: Preset<Schemes, A>[] = []
+  public timing: number
 
   constructor(props?: { timing?: number }) {
     super('history')
@@ -20,14 +25,13 @@ export class HistoryPlugin<Schemes extends BaseSchemes, K> extends Scope<never, 
     this.timing = props?.timing ?? 200
   }
 
-  setParent(scope: Scope<Area2D<Schemes>, [Root<Schemes>]>): void {
+  setParent(scope: Scope<BaseArea<Schemes>, [Root<Schemes>]>): void {
     super.setParent(scope)
 
-    this.area = this.parentScope<AreaPlugin<Schemes, K>>(AreaPlugin)
+    this.area = this.parentScope<BaseAreaPlugin<Schemes, BaseArea<Schemes>>>(BaseAreaPlugin)
     this.editor = this.area.parentScope<NodeEditor<Schemes>>(NodeEditor)
 
-    this.trackNodes()
-    this.trackConnections()
+    this.presets.forEach(preset => preset.connect(this))
 
     this.editor.addPipe(context => {
       if (context.type === 'cleared') {
@@ -37,97 +41,9 @@ export class HistoryPlugin<Schemes extends BaseSchemes, K> extends Scope<never, 
     })
   }
 
-  private trackNodes() {
-    const nodes = new Map<NodeId, BaseSchemes['Node']>()
-    const positions = new Map<NodeId, Position>()
-
-    // eslint-disable-next-line max-statements
-    this.editor.addPipe(context => {
-      if (context.type === 'nodecreated') {
-        const { id } = context.data
-
-        this.history.add(new AddNodeAction(this.editor, this.area, id))
-        nodes.set(id, this.editor.getNode(context.data.id))
-      }
-      if (context.type === 'noderemoved') {
-        const { id } = context.data
-        const node = nodes.get(id)
-        const position = positions.get(id)
-
-        if (!node) throw new Error('node')
-        if (!position) throw new Error('position' + id)
-        this.history.add(new RemoveNodeAction(this.editor, this.area, node, position))
-
-        positions.delete(id)
-        nodes.delete(id)
-      }
-      return context
-    })
-    this.area.addPipe(context => {
-      if (!('type' in context)) return context
-
-      if (context.type === 'nodetranslated') {
-        const { id, position } = context.data
-
-        positions.set(id, position)
-      }
-      return context
-    })
-
-    const picked: string[] = []
-
-    // eslint-disable-next-line max-statements
-    this.area.addPipe(context => {
-      if (!context || typeof context !== 'object' || !('type' in context)) return context
-
-      if (context.type === 'nodepicked') {
-        picked.push(context.data.id)
-      }
-      if (context.type === 'nodedragged') {
-        const index = picked.indexOf(context.data.id)
-
-        if (index >= 0) picked.splice(index, 1)
-      }
-      if (context.type === 'nodetranslated') {
-        const { id, position, previous } = context.data
-        const recent = this.history.getRecent(this.timing * 2)
-          .filter((n): n is ({ time: number, action: DragNodeAction<Schemes, any> }) => n.action instanceof DragNodeAction)
-          .filter(n => n.action.nodeId === id)
-
-        if (recent.length > 1) throw new Error('> 1')
-
-        if (recent[0]) {
-          recent[0].action.new = position
-          recent[0].time = Date.now()
-        } else {
-          this.history.add(new DragNodeAction(this.area, id, previous))
-        }
-      }
-
-      return context
-    })
-  }
-
-  private trackConnections() {
-    const connections = new Map<ConnectionId, Schemes['Connection']>()
-
-    this.editor.addPipe(context => {
-      if (context.type === 'connectioncreated') {
-        const connection = this.editor.getConnection(context.data.id)
-
-        this.history.add(new AddConnectionAction(this.editor, connection))
-        connections.set(context.data.id, connection)
-      }
-      if (context.type === 'connectionremoved') {
-        const connection = connections.get(context.data.id)
-
-        if (connection) {
-          this.history.add(new RemoveConnectionAction(this.editor, connection))
-        }
-      }
-
-      return context
-    })
+  public addPreset<T extends A>(preset: Preset<Schemes, T>) {
+    this.presets.push(preset as unknown as Preset<Schemes, A>)
+    if (this.area && this.editor) (preset as unknown as Preset<Schemes, A>).connect(this)
   }
 
   public add(action: A) {

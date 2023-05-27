@@ -1,9 +1,9 @@
 import { BaseSchemes, NodeEditor } from 'rete'
 
-import Action from '../action'
+import { Action } from '../../../types'
 
 export class AddConnectionAction<S extends BaseSchemes> implements Action {
-  constructor(private editor: NodeEditor<S>, private connection: S['Connection']) {}
+  constructor(private editor: NodeEditor<S>, private connection: S['Connection']) { }
 
   async undo() {
     await this.editor.removeConnection(this.connection.id)
@@ -15,7 +15,7 @@ export class AddConnectionAction<S extends BaseSchemes> implements Action {
 }
 
 export class RemoveConnectionAction<S extends BaseSchemes> implements Action {
-  constructor(private editor: NodeEditor<S>, private connection: S['Connection']) {}
+  constructor(private editor: NodeEditor<S>, private connection: S['Connection']) { }
 
   async undo() {
     await this.editor.addConnection(this.connection)
