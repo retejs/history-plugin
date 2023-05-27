@@ -1,0 +1,18 @@
+## v2.0.0-beta.6
+
+- Fix node position for "undo" method of removed node
+- Exposed `add`, `getHistorySnapshot`, `getRecent` and `clear` methods
+- Added `history.separate()` and support `action.separated = true`
+- Breaking changes:
+  - Added presets
+  ```ts
+  import { Presets as HistoryPresets } from "rete-history-plugin";
+
+  history.addPreset(HistoryPresets.classic.setup());
+  ```
+  - action types as second generic argument
+  ```ts
+  import { HistoryActions, HistoryPlugin } from "rete-history-plugin";
+
+  const history = new HistoryPlugin<Schemes, HistoryActions<Schemes>>();
+  ```
