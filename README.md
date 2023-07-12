@@ -21,4 +21,4 @@ Please refer to the [Contribution](https://retejs.org/docs/contribution) guide
 
 ## License
 
-[MIT](https://github.com/retejs/history-plugin/blob/master/LICENSE)
+[MIT](https://github.com/retejs/history-plugin/blob/main/LICENSE)
