@@ -115,6 +115,9 @@ function trackConnections<S extends BaseSchemes>(history: HistoryPlugin<S, Conne
   })
 }
 
+/**
+ * Classic preset for the history plugin. Tracks node adding/removing/translating, connection adding/removing.
+ */
 export function setup<S extends BaseSchemes>(props?: { timing?: number }): Preset<S, HistoryActions<S>> {
   return {
     connect(history) {
