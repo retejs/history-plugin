@@ -121,7 +121,7 @@ function trackConnections<S extends BaseSchemes>(history: HistoryPlugin<S, Conne
 export function setup<S extends BaseSchemes>(props?: { timing?: number }): Preset<S, HistoryActions<S>> {
   return {
     connect(history) {
-      const timing = props?.timing ?? (history.timing * 2)
+      const timing = props?.timing ?? history.timing * 2
 
       trackNodes(history, { timing })
       trackConnections(history)
