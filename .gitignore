@@ -3,3 +3,6 @@ node_modules
 .vscode/
 dist
 docs
+/coverage
+.rete-cli
+.sonar

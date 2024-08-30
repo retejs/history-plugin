@@ -39,7 +39,9 @@ export class HistoryPlugin<Schemes extends BaseSchemes, A extends Action = Actio
     this.area = this.parentScope<BaseAreaPlugin<Schemes, BaseArea<Schemes>>>(BaseAreaPlugin)
     this.editor = this.area.parentScope<NodeEditor<Schemes>>(NodeEditor)
 
-    this.presets.forEach(preset => preset.connect(this))
+    this.presets.forEach(preset => {
+      preset.connect(this)
+    })
 
     this.editor.addPipe(context => {
       if (context.type === 'cleared') {

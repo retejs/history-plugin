@@ -11,13 +11,12 @@ export function keyboard<Schemes extends BaseSchemes, A extends Action>(plugin: 
   document.addEventListener('keydown', e => {
     if (!e.ctrlKey && !e.metaKey) return
 
-    /* eslint-disable indent */
     switch (e.code) {
       case 'KeyZ':
-        plugin.undo()
+        void plugin.undo()
         break
       case 'KeyY':
-        plugin.redo()
+        void plugin.redo()
         break
       default:
     }
