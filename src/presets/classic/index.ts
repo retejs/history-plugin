@@ -7,10 +7,18 @@ import { Preset } from '../types'
 import { AddConnectionAction, RemoveConnectionAction } from './actions/connection'
 import { AddNodeAction, DragNodeAction, Position, RemoveNodeAction } from './actions/node'
 
+export {
+  AddConnectionAction,
+  AddNodeAction,
+  DragNodeAction,
+  RemoveConnectionAction,
+  RemoveNodeAction
+}
+
 type NodeActions<S extends BaseSchemes> =
-  | AddNodeAction<S>
-  | RemoveNodeAction<S>
-  | DragNodeAction<S>
+  | AddNodeAction<S, BaseArea<S>>
+  | RemoveNodeAction<S, BaseArea<S>>
+  | DragNodeAction<S, BaseArea<S>>
 
 type ConnectionActions<S extends BaseSchemes> =
   | AddConnectionAction<S>
@@ -30,7 +38,7 @@ function trackNodes<S extends BaseSchemes>(history: HistoryPlugin<S, NodeActions
     if (context.type === 'nodecreated') {
       const { id } = context.data
 
-      history.add(new AddNodeAction<S>(editor, area, id))
+      history.add(new AddNodeAction(editor, area, id))
       nodes.set(id, editor.getNode(context.data.id))
     }
     if (context.type === 'noderemoved') {
@@ -40,7 +48,7 @@ function trackNodes<S extends BaseSchemes>(history: HistoryPlugin<S, NodeActions
 
       if (!node) throw new Error('node')
       if (!position) throw new Error('position' + id)
-      history.add(new RemoveNodeAction<S>(editor, area, node, position))
+      history.add(new RemoveNodeAction(editor, area, node, position))
 
       positions.delete(id)
       nodes.delete(id)
@@ -75,7 +83,7 @@ function trackNodes<S extends BaseSchemes>(history: HistoryPlugin<S, NodeActions
     if (context.type === 'nodetranslated') {
       const { id, position, previous } = context.data
       const recent = history.getRecent(timing)
-        .filter((n): n is ({ time: number, action: DragNodeAction<S> }) => n.action instanceof DragNodeAction)
+        .filter((n): n is ({ time: number, action: DragNodeAction<S, BaseArea<S>> }) => n.action instanceof DragNodeAction)
         .filter(n => n.action.nodeId === id)
 
       if (recent.length > 1) throw new Error('> 1')
@@ -84,7 +92,7 @@ function trackNodes<S extends BaseSchemes>(history: HistoryPlugin<S, NodeActions
         recent[0].action.new = position
         recent[0].time = Date.now()
       } else {
-        history.add(new DragNodeAction<S>(area, id, previous))
+        history.add(new DragNodeAction(area, id, previous))
       }
     }
 
