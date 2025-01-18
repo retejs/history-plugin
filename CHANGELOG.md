@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/retejs/history-plugin/compare/v2.0.2...v2.1.0) (2025-01-18)
+
+
+### Features
+
+* expose classic action classes ([2939916](https://github.com/retejs/history-plugin/commit/2939916a072e1e2ed5bcc3aa4b2315c00d2f37d4))
+
 ## [2.0.2](https://github.com/retejs/history-plugin/compare/v2.0.1...v2.0.2) (2024-08-30)
 
 
