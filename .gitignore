@@ -6,3 +6,4 @@ docs
 /coverage
 .rete-cli
 .sonar
+/tmp
