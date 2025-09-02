@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/retejs/history-plugin/compare/v2.1.0...v2.1.1) (2025-09-02)
+
+
+### Bug Fixes
+
+* prevent keyboard shortcuts from conflicting with text input ([7f514e3](https://github.com/retejs/history-plugin/commit/7f514e3205acbc5621fa08774063ce84a528013a))
+
 # [2.1.0](https://github.com/retejs/history-plugin/compare/v2.0.2...v2.1.0) (2025-01-18)
 
 
