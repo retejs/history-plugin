@@ -10,5 +10,5 @@ jobs:
     uses: retejs/.github/.github/workflows/update-docs.yml@main
     secrets: inherit
     with:
-      filename: "6.rete-history-plugin"
+      filename: "06.rete-history-plugin"
       package: rete-history-plugin
