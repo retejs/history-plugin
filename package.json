@@ -38,7 +38,7 @@
     "rete": "^2.0.1",
     "rete-area-plugin": "^2.0.0",
     "rete-cli": "~2.0.1",
-    "rete-comment-plugin": "^2.2.0",
+    "rete-comment-plugin": "github:retejs/comment-plugin#dist/feature/comments-history",
     "typescript": "~4.8.4"
   },
   "dependencies": {
