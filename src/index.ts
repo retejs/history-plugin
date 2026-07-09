@@ -87,6 +87,13 @@ export class HistoryPlugin<Schemes extends BaseSchemes, A extends Action = Actio
   }
 
   /**
+   * Removes the most recent history record matching the predicate within the time window
+   */
+  public removeRecent(predicate: (record: { time: number, action: A }) => boolean, ms?: number) {
+    return this.history.removeRecent(predicate, ms ?? this.timing * 2)
+  }
+
+  /**
    * Clear history
    */
   public clear() {

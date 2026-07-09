@@ -35,6 +35,22 @@ export default class History<A extends Action> {
     return list
   }
 
+  removeRecent(predicate: (record: HistoryRecord<A>) => boolean, ms: number) {
+    const treshold = Date.now() - ms
+
+    for (let i = this.produced.length - 1; i >= 0; i--) {
+      const record = this.produced[i]
+
+      if (record.time <= treshold) break
+      if (record.separated) break
+
+      if (predicate(record)) {
+        this.produced.splice(i, 1)
+        return record
+      }
+    }
+  }
+
   async move(from: HistoryRecord<A>[], to: HistoryRecord<A>[], type: 'undo' | 'redo') {
     const record = from.pop()
 
