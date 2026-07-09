@@ -9,6 +9,7 @@ export type { Action as HistoryAction }
 export * as HistoryExtensions from './extensions'
 export * as Presets from './presets'
 export type { HistoryActions } from './presets/classic'
+export type { CommentHistoryActions } from './presets/comments'
 export type { Preset } from './presets/types'
 
 /**

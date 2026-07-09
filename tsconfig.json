@@ -1,4 +1,9 @@
 {
     "extends": "rete-cli/configs/tsconfig.json",
-    "include": ["src"]
+    "include": ["src"],
+    "compilerOptions": {
+        "paths": {
+            "rete-comment-plugin": ["../comment-plugin/src/index.ts"]
+        }
+    }
 }

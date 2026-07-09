@@ -6,6 +6,7 @@ export default <ReteOptions>{
   name: 'ReteHistoryPlugin',
   globals: {
     'rete': 'Rete',
-    'rete-area-plugin': 'ReteAreaPlugin'
+    'rete-area-plugin': 'ReteAreaPlugin',
+    'rete-comment-plugin': 'ReteCommentPlugin'
   }
 }

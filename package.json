@@ -25,12 +25,19 @@
   },
   "peerDependencies": {
     "rete": "^2.0.1",
-    "rete-area-plugin": "^2.0.0"
+    "rete-area-plugin": "^2.0.0",
+    "rete-comment-plugin": "^2.1.0"
+  },
+  "peerDependenciesMeta": {
+    "rete-comment-plugin": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "globals": "^15.9.0",
     "rete": "^2.0.1",
     "rete-area-plugin": "^2.0.0",
+    "rete-comment-plugin": "^2.1.2",
     "rete-cli": "~2.0.1",
     "typescript": "~4.8.4"
   },
