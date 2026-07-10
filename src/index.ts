@@ -9,6 +9,7 @@ export type { Action as HistoryAction }
 export * as HistoryExtensions from './extensions'
 export * as Presets from './presets'
 export type { HistoryActions } from './presets/classic'
+export type { CommentHistoryActions } from './presets/comments'
 export type { Preset } from './presets/types'
 
 /**
@@ -83,6 +84,13 @@ export class HistoryPlugin<Schemes extends BaseSchemes, A extends Action = Actio
    */
   public getRecent(ms: number) {
     return this.history.getRecent(ms)
+  }
+
+  /**
+   * Removes the most recent history record matching the predicate within the time window
+   */
+  public removeRecent(predicate: (record: { time: number, action: A }) => boolean, ms?: number) {
+    return this.history.removeRecent(predicate, ms ?? this.timing * 2)
   }
 
   /**
